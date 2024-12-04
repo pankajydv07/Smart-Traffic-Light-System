@@ -3,12 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    
+    <title>Smart Traffic Light System</title>
+    <style>
+        .traffic-light {
+            width: 100px;
+            height: 300px;
+            background-color: black;
+            border-radius: 10px;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+            margin: auto;
+            text-align: center;
+        }
+        .light {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background-color: gray;
+        }
+        .red { background-color: red; }
+        .yellow { background-color: yellow; }
+        .green { background-color: green; }
+    </style>
 </head>
 <body>
-    <a href="https://iconscout.com/icons/leetcode" class="text-underline font-size-sm" target="_blank">Leetcode</a> by <a href="https://iconscout.com/contributors/icon-54" class="text-underline font-size-sm">Icon 54</a> on <a href="https://iconscout.com" class="text-underline font-size-sm">IconScout</a>
-</head>
-<body>
+    <h1>Smart Traffic Light Control Simulation</h1>
+    <div class="traffic-light">
+        <div id="red-light" class="light"></div>
+        <div id="yellow-light" class="light"></div>
+        <div id="green-light" class="light"></div>
+    </div>
+
+    <script>
+        async function fetchTrafficLightColor() {
+            try {
+                const response = await fetch('http://127.0.0.1:5000/traffic_light');
+                const data = await response.json();
+                const color = data.color;
+
+                // Update the traffic light display
+                document.getElementById("red-light").classList.remove("red");
+                document.getElementById("yellow-light").classList.remove("yellow");
+                document.getElementById("green-light").classList.remove("green");
+
+                if (color === "red") {
+                    document.getElementById("red-light").classList.add("red");
+                } else if (color === "yellow") {
+                    document.getElementById("yellow-light").classList.add("yellow");
+                } else if (color === "green") {
+                    document.getElementById("green-light").classList.add("green");
+                }
+
+                console.log("Light Color:", color);
+            } catch (error) {
+                console.error("Error fetching traffic light color:", error);
+            }
+        }
+
+        // Update every second
+        setInterval(fetchTrafficLightColor, 1000);
+    </script>
 </body>
 </html>
